@@ -45,8 +45,9 @@ int main() {
     cpp_int p, q, e;
     std::string plaintext;
     std::vector<cpp_int> ciphertext;
-
+    std::cout << "Enter your plaintext: ";
     std::getline(std::cin, plaintext);
+    std::cout << "Enter your p, q and e: ";
     std::cin >> p >> q >> e;
 
     cpp_int n = p * q;
