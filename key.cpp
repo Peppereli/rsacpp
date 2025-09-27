@@ -5,17 +5,6 @@
 
 using boost::multiprecision::cpp_int;
 
-cpp_int power(cpp_int base, cpp_int exp, cpp_int mod) {
-    cpp_int result = 1;
-    while (exp > 0) {
-        if (exp % 2 == 1)
-            result = (result * base) % mod;
-        base = (base * base) % mod;
-        exp /= 2;
-    }
-    return result;
-}
-
 cpp_int gcd(cpp_int a, cpp_int b) {
     if (b==0) return a;
     return gcd(b, a%b);
@@ -44,7 +33,7 @@ cpp_int mod_inverse(cpp_int a, cpp_int m) {
 int main(){
     cpp_int p, q, e;
     cpp_int n = p * q;
-    std::cout << "Enter p and q: ";
+    std::cout << "Enter p, q and e respectively: ";
     std::cin >> p >> q >> e;
     cpp_int r = (p - 1) * (q - 1);
     cpp_int d = mod_inverse(e, r);
