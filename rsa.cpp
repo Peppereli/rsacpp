@@ -82,6 +82,6 @@ for (cpp_int encrypted_char : ciphertext) {
 }
 
 std::cout << "Decrypted Message: " << decrypted_message << "\n";
-    std::cout << "\nr: " << r << " d: " << d << "\n";
+    std::cout << "r: " << r << " d: " << d << "\n";
     return 0;
 }
