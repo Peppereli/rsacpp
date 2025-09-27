@@ -41,43 +41,19 @@ cpp_int mod_inverse(cpp_int a, cpp_int m) {
     return (x % m + m) % m;
 }
 
-int main() {
+int main(){
     cpp_int p, q, e;
-    std::string plaintext;
-    std::vector<cpp_int> ciphertext;
-    std::cout << "Enter your plaintext: ";
-    std::getline(std::cin, plaintext);
-    std::cout << "Enter your p, q and e: ";
-    std::cin >> p >> q >> e;
-
     cpp_int n = p * q;
+    std::cout << "Enter p and q: ";
+    std::cin >> p >> q >> e;
     cpp_int r = (p - 1) * (q - 1);
     cpp_int d = mod_inverse(e, r);
-
     if (d == -1) {
         std::cerr << "Error: Modular inverse of e does not exist.\n";
         return 1;
     }
+    std::cout << "Public key: " << p*q << "\nPrivate key: " << d << "\n";
+    
 
-    for (char c : plaintext) {
-        cpp_int encrypted_char = power(c, e, n);
-        ciphertext.push_back(encrypted_char);
-    }
 
-    std::cout << "Ciphertext: ";
-    for (cpp_int encrypted_char : ciphertext) {
-        std::cout << encrypted_char << " ";
-    }
-    std::cout << "\n";
-
-    std::string decrypted_text;
-    for (cpp_int encrypted_char : ciphertext) {
-        cpp_int decrypted_char = power(encrypted_char, d, n);
-        char decrypted = static_cast<char>(decrypted_char.convert_to<long long>());
-        decrypted_text += decrypted;
-    }
-
-    std::cout << "Decrypted text: " << decrypted_text << "\n";
-    std::cout << "r: " << r << " d: " << d << "\n";
-    return 0;
 }
