@@ -2,6 +2,7 @@
 #include <string>
 #include <vector>
 #include <boost/multiprecision/cpp_int.hpp>
+#include <boost/multiprecision/number.hpp>
 
 using boost::multiprecision::cpp_int;
 
@@ -53,13 +54,18 @@ int main(){
     for (int i=0; i<cipher.size(); ++i){
         std::cout << cipher[i] << " ";
     }
-    std::vector<std::string> s;
-    for (int i=0; i<cipher.size(); ++i){
-        cpp_int decrypted = power(cipher[i], d, n);
-        std::string de_ch = static_cast<std::string>(decrypted.convert_to<long>());
-        s.push_back(de_ch);
-    }
-    for (int i=0; i<s.size(); ++i){
-        std::cout << s[i] << " ";
-    }
+
+    std::string decrypted_message = "";
+
+for (int i=0; i<cipher.size(); ++i) {
+    cpp_int decrypted_value = power(cipher[i], d, n);
+    
+    int char_code = decrypted_value.convert_to<int>();
+    char decrypted_char = static_cast<char>(char_code); 
+    
+    decrypted_message += decrypted_char;
+}
+
+std::cout << "\nDecrypted Message: " << decrypted_message << "\n";
+return 0;
 }

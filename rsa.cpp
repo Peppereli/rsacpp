@@ -70,14 +70,18 @@ int main() {
     }
     std::cout << "\n";
 
-    std::string decrypted_text;
-    for (cpp_int encrypted_char : ciphertext) {
-        cpp_int decrypted_char = power(encrypted_char, d, n);
-        char decrypted = static_cast<char>(decrypted_char.convert_to<long long>());
-        decrypted_text += decrypted;
-    }
+    std::string decrypted_message = "";
 
-    std::cout << "Decrypted text: " << decrypted_text << "\n";
-    std::cout << "r: " << r << " d: " << d << "\n";
+for (cpp_int encrypted_char : ciphertext) {
+    cpp_int decrypted_value = power(encrypted_char, d, n);
+    
+    int char_code = decrypted_value.convert_to<int>();
+    char decrypted_char = static_cast<char>(char_code); 
+    
+    decrypted_message += decrypted_char;
+}
+
+std::cout << "Decrypted Message: " << decrypted_message << "\n";
+    std::cout << "\nr: " << r << " d: " << d << "\n";
     return 0;
 }
