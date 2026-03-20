@@ -24,7 +24,7 @@ int main(){
     std::getline(std::cin, s);
     std::cout << "Enter n and e respectively: ";
     std::cin >> n >> e;
-    for (char c:s){
+    for (unsigned char c:s){
         cpp_int en = power(c, e, n);
         ciphertext.push_back(en);
     }
