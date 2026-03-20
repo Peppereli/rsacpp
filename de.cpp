@@ -1,47 +1,67 @@
 #include <iostream>
-#include <string>
 #include <vector>
+#include <string>
+#include <limits>
 #include <boost/multiprecision/cpp_int.hpp>
-#include <boost/multiprecision/number.hpp>
 
 using boost::multiprecision::cpp_int;
 
-cpp_int power(cpp_int base, cpp_int exp, cpp_int mod) {
+cpp_int modexp(cpp_int base, cpp_int exp, cpp_int mod) {
     cpp_int result = 1;
+    base %= mod;
+
     while (exp > 0) {
         if (exp % 2 == 1)
             result = (result * base) % mod;
+
         base = (base * base) % mod;
         exp /= 2;
     }
+
     return result;
 }
 
-int main(){
-    cpp_int element, d, n;
+int main() {
+    cpp_int d, n, x;
     std::vector<cpp_int> cipher;
-    std::cout << "Enter d and n respecively: ";
+
+    std::cout << "Enter d and n respectively: ";
     std::cin >> d >> n;
-    std::cout << "Enter integers of the ciphertext, type a non-integer at the end to stop the input: ";
-    while(std::cin >> element){
-        cipher.push_back(element);
+
+    std::cout << "Enter ciphertext integers (non-number to stop): ";
+
+    while (std::cin >> x) {
+        cipher.push_back(x);
     }
+
     std::cin.clear();
-    for (int i=0; i<cipher.size(); ++i){
-        std::cout << cipher[i] << " ";
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+
+    std::vector<unsigned char> bytes;
+    bytes.reserve(cipher.size());
+
+    for (const cpp_int& c : cipher) {
+        cpp_int m = modexp(c, d, n);
+
+        if (m < 0 || m >= n) {
+            std::cerr << "Warning: invalid RSA block ignored: " << m << "\n";
+            continue;
+        }
+
+        unsigned int val = m.convert_to<unsigned int>();
+
+        if (val > 255) {
+            std::cerr << "Warning: non-byte value ignored: " << val << "\n";
+            continue;
+        }
+
+        bytes.push_back(static_cast<unsigned char>(val));
     }
 
-    std::string decrypted_message = "";
+    std::string message(bytes.begin(), bytes.end());
 
-for (int i=0; i<cipher.size(); ++i) {
-    cpp_int decrypted_value = power(cipher[i], d, n);
-    
-    int char_code = decrypted_value.convert_to<int>();
-    char decrypted_char = static_cast<char>(char_code); 
-    
-    decrypted_message += decrypted_char;
-}
+    std::cout << "\nDecrypted Message:\n";
+    std::cout << message << "\n";
 
-std::cout << "\nDecrypted Message: " << decrypted_message << "\n";
-return 0;
+    return 0;
 }
